@@ -15,6 +15,16 @@ from numpy import *
 import operator
 from os import listdir
 
+import matplotlib
+import matplotlib.pyplot as plt
+
+def drawplot(dmat, lmat):
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.scatter(dmat[:,1],lmat[:,2])
+    plt.show()
+
+
 def classify0(inX, dataSet, labels, k):
     dataSetSize = dataSet.shape[0]
     diffMat = tile(inX, (dataSetSize,1)) - dataSet

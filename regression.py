@@ -85,6 +85,21 @@ def lwlrTestPlot(xArr,yArr,k=1.0):  #same thing as lwlrTest except it sorts X fi
     for i in range(shape(xArr)[0]):
         yHat[i] = lwlr(xCopy[i],xArr,yArr,k)
     return yHat,xCopy
+
+
+def ridgRegres(xMat, yMat, lam = 0.2):
+    yMean = mean(yMat, 0); xMeans = mean(xMat, 0)
+    xVar = var(xMat, 0)
+    yMat = yMat - yMean
+    xMat = (xMat - xMeans) /xVar
+    xTx = xMat.T * xMat
+    demon = xTx + eye(shape(xMat)[1]) * lam
+    if linalg.det(demon) == 0.0:
+        print("This matrix is singular, cannot find inverser")
+        return
+    ws = xTx.I * (xMat.T *yMat)
+    return ws
+
 #####################################################################################################
 
 def drawlwlr(k=1.0):

@@ -49,12 +49,13 @@ def chooseBestFeatureToSplit(dataset): #assume the last one is lable
         featureList = [example[i] for example in dataset]
         uniqset = set(featureList)
         newEntropy = 0.0
+        ratios = 0.0
         for val in uniqset:
             newset = splitDataSet(dataset,i,val)
             prob = len(newset) / totals
             newEntropy += prob*calcShannonEnt(newset)
-            ratios = -1*prob*math.log(prob,2)
-        infogain = (baseEnt - newEntropy)/ratios
+            ratios += prob*math.log(prob,2)
+        infogain = (baseEnt - newEntropy)/(-1*ratios)
         if infogain > bestInfoGain:
             bestInfoGain=infogain; bestfeature =i
         #print("for %i axis, InfoGain = %f" % (i,infogain))
@@ -101,3 +102,8 @@ def grabTree(filename):
     import  pickle
     fr = open(filename,'rb+')
     return pickle.load(fr)
+
+################################################################
+dmat, labels = createDataSet()
+metree = createtree(dmat, labels)
+print(metree)

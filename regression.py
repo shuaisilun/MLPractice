@@ -44,6 +44,7 @@ def plotRegression():
     xmat = mat(xarr)
     ymat = mat(yarr)
     ws = standRegression(xarr, yarr)
+    #ws = ridgRegres(xmat, ymat)
     yhat = xmat * ws
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -88,8 +89,8 @@ def lwlrTestPlot(xArr,yArr,k=1.0):  #same thing as lwlrTest except it sorts X fi
 
 
 def ridgRegres(xMat, yMat, lam = 0.2):
-    yMean = mean(yMat, 0); xMeans = mean(xMat, 0)
-    xVar = var(xMat, 0)
+    yMean = mean(yMat); xMeans = mean(xMat,0)
+    xVar = var(xMat, 1)
     yMat = yMat - yMean
     xMat = (xMat - xMeans) /xVar
     xTx = xMat.T * xMat
@@ -97,7 +98,7 @@ def ridgRegres(xMat, yMat, lam = 0.2):
     if linalg.det(demon) == 0.0:
         print("This matrix is singular, cannot find inverser")
         return
-    ws = xTx.I * (xMat.T *yMat)
+    ws = xTx.I * (xMat.T *yMat.T)
     return ws
 
 def regularize(xMat):#regularize by columns
@@ -149,3 +150,4 @@ def drawlwlr(k=1.0):
     plt.show()
 
 drawlwlr(0.015)
+#plotRegression()

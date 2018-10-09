@@ -8,3 +8,10 @@ def loadDataSet(fileName):      #general function to parse tab -delimited floats
         fltLine = map(float,curLine) #map all elements to float()
         dataMat.append(fltLine)
     return dataMat
+
+class treeNode():
+    def __init__(self, feat, val , right, left):
+        featureToSpliOn = feat
+        valueOfSplit = val
+        rightBranch = right
+        leftBrach = left

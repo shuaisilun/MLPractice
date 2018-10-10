@@ -1,4 +1,5 @@
 from numpy import *
+from math import *
 import matplotlib.pyplot as plt
 
 def loadfiles(fname):
@@ -73,7 +74,7 @@ class weakClassifier:
     def predict(self, testsample):
         return self.predictfunc(testsample, self.w)
 
-def adaboost(dataset, lables, K = 10):
+def adaboost(dataset, lables, K = 10): ### This is from pinard's blog
     dmat = mat(dataset) ; lmat = mat(lables)
     larr = array(lables)
     m,n = dmat.shape
@@ -82,25 +83,33 @@ def adaboost(dataset, lables, K = 10):
     alphas = ones(shape = (K, 1))
     weakclist = []
     for i in range(K):
-        dmat = multiply(w, dmat)
+        dmat = multiply(w,dmat)
         wc = weakClassifier(standardRegres, standardRegressPredict)
         predictresults = []
         wc.train(dataset, lables)
         for j in range(m):
             predictresults.append(wc.predict(dataset[j]))
         diff = array(predictresults) - larr
-        ekmax = abs(diff).max()
-        eki = mat(diff**2 / ekmax**2)
-        ek = eki * w
-        alphas[i] = ek / (1-ek)
-        z = 0
+        errorRate = len(diff[diff >= 0.01]) / m
+        if errorRate <= 0.3:
+            return weakclist, alphas
+        alphas[i] = math.log((1-errorRate)/errorRate, 10) /2
+        z =0
         for j in range(m):
-            z += w[j] * pow(alphas[i,0], (1-diff[j]))
+            z += w[j]*exp(-alphas[i]*diff[j])
         for j in range(m):
-            w[j] = w[j]/z * pow(alphas[i,0], 1-diff[j])
+            w[j] = w[j] / z * exp(-alphas[i] * (lables[j]*predictresults[j]))
         weakclist.append(wc)
-
     return weakclist, alphas
+
+
+def adaboostTest(weakclist, alphas, testsample):
+    t = len(weakclist)
+    result = 0
+    for i in range(t):
+        result += alphas[i]*weakclist[i].predict()
+    return sign(result)
+
 
 #####################################test#code###################################################
 def testLinearRegression():
@@ -129,4 +138,4 @@ def testAdaboost():
     adaboost(d,l)
 
 
-#testAdaboost()
+testAdaboost()

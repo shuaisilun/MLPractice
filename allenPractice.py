@@ -78,6 +78,7 @@ def adaboost(dataset, lables, K = 10):
     larr = array(lables)
     m,n = dmat.shape
     w = ones(shape = (m, 1))
+    w = w/m
     alphas = ones(shape = (K, 1))
     weakclist = []
     for i in range(K):

@@ -47,6 +47,29 @@ def kmeans(dataset, k, distmeas = distEclud, createCent = randcent):
     return centroid, clusterAssemt
 
 
+def LVQ(dataset, rate):
+    labelcount = len(set(dataset[:, -1].A))
+    m,n = shape(dataset)
+    centroid = randcent(dataset, labelcount)
+    loop = 0
+    while loop <=500:
+        loop = loop + 1
+        x = dataset[int(random.rand()* m),:]
+        p = 0 ; mindist = inf
+        for i in range(labelcount):
+            dist = distEclud(x[0:n-1], centroid[i, 0:n-1])
+            if dist < mindist:
+                mindist = dist
+                p = i
+        if x[-1] == centroid[p, -1]:
+            centroid[p] = centroid[p] + rate * (x - centroid[p])
+        else:
+            centroid[p] = centroid[p] - rate * (x - centroid[p])
+    return centroid
+
+
+
+
 ########################################################################
 def testcode():
     dmat= mat(loaddataset('testSet.txt'))

@@ -111,6 +111,22 @@ def adaboostTest(weakclist, alphas, testsample):
     return sign(result)
 
 
+def svd(dmat):
+    dmat = mat(dmat)
+    m, n = shape(dmat)
+    mtm = dmat.T * dmat
+    eigValmtm, eigVectmtm = linalg.eig(mtm)
+    v = eigVectmtm
+    mmt = dmat * dmat.T
+    eigValmmt, eigVectmmt = linalg.eig(mmt)
+    u = eigVectmmt
+    num = min(eigVectmmt.shape[1], eigVectmtm.shape[1])
+    s = zeros(shape = (m, n))
+    for i in range(num):
+        s[i, i] = (dmat * v[:, i] / u[:, i])[0, 0]
+    return u, s, v
+
+
 #####################################test#code###################################################
 def testLinearRegression():
     dmat, lmat = loadfiles('ex0.txt')
@@ -138,4 +154,9 @@ def testAdaboost():
     adaboost(d,l)
 
 
-testAdaboost()
+#testAdaboost()
+m = mat([[1,1],[7,7]])
+u1, sig1, v1 = svd(m)
+print(u1)
+print(sig1)
+print(v1)

@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/repo/eyilyao/lts_new/install/etc'
+let g:netrw_dirhist_2='/repo/eyilyao/lts_new/install'
+let g:netrw_dirhist_3='/repo/eyilyao/lts_new/install/scripts'
+let g:netrw_dirhist_4='/repo/eyilyao/lts_new/install/scripts/infra'
